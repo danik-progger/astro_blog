@@ -1,0 +1,38 @@
+---
+import PostHeader from "../components/PostHeader.astro";
+import CategoriesList from "../components/CategoriesList.astro";
+import RelatedPosts from "../components/RelatedPosts.astro";
+import MainLayout from "./MainLayout.astro";
+import { filterPosts } from "../js/utils"
+
+const { frontmatter } = Astro.props;
+const { title, description, date, category, author, image } = frontmatter;
+
+const posts = await Astro.glob("../pages/blog/posts/*.md");
+const allPosts = filterPosts(posts, { sortByDate: false, });
+const relatedPosts = allPosts.filter(
+  post => post.frontmatter.category.toLowerCase() === category.toLowerCase() && post.frontmatter.title !== title)
+---
+
+<MainLayout {title} {description}>
+  <PostHeader {title} {description} {date} {category} {image} {author} />
+  <div class="post-content">
+    <div class="content">
+      <slot />
+    </div>
+    <div class="sidebar">
+
+      <aside class="container" aria-label="Blog Categories">
+        <h2 class="h3">Blog Categories</h2>
+        <CategoriesList />
+      </aside>
+      {
+        relatedPosts.length > 0 && 
+        <aside class="container" aria-label="Related Posts">
+          <h2 class="h3">Related Posts</h2>
+            <RelatedPosts {relatedPosts} />
+        </aside>
+      }
+    </div>
+  </div>
+</MainLayout>

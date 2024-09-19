@@ -1,0 +1,17 @@
+---
+import PostCard from "../components/PostCard.astro";
+import MainLayout from "../layouts/MainLayout.astro"
+import { filterPosts } from "../js/utils"
+
+const posts = await Astro.glob("./blog/posts/*.md");
+const filteredPosts = filterPosts(posts, { limit: 3, sortByDate: false, });
+---
+
+<MainLayout title="My Blog" aria-label="New Blog Post">
+    <seciton class="container">
+        <h1 class="h2">New Blog Post</h1>
+        <div class="post-container">
+            {filteredPosts.map(post => <PostCard frontmatter={post.frontmatter} url={post.url} showDescription={false}/>)}
+        </div>
+    </seciton>
+</MainLayout>

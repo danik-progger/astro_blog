@@ -1,0 +1,40 @@
+---
+// library imports
+import { Image } from 'astro:assets';
+
+// utils imports
+import { slugify, formatDate } from "../js/utils";
+
+const { frontmatter, url, showDescription=true } = Astro.props;
+const { category, title, author, date, image, description } = frontmatter;
+---
+
+<article class="card">
+    <small>
+        <a href={`/categories/${slugify(category)}/`} class="badge">
+            {category}
+        </a>
+    </small>
+    <a href={url} aria-hidden="true" tabindex="-1">
+        <Image
+            src={image.src}
+            alt={image.alt}
+            width={400}
+            height={250}
+            format="avif"
+            quality={80}
+            class="hero-image"
+        /></a>
+        <div class="content">
+            <div>
+                <a href={url}>
+                    <h3 class="h3">{title}</h3></a>
+                    <small>
+                        by <a href={`/authors/${slugify(author)}/`}>{author}</a> • {
+                            formatDate(date)
+                        }
+                    </small>
+                </div>
+            {showDescription && <p>{description}</p>}
+        </div>
+</article>

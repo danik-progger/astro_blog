@@ -1,0 +1,31 @@
+---
+import PostCard from "../../components/PostCard.astro";
+import MainLayout from "../../layouts/MainLayout.astro"
+import { filterPosts, slugify } from "../../js/utils"
+
+
+export async function getStaticPaths() {
+    const categories = ["Reference Docs", "CSS", "Astro", "General"]
+
+    const paths = categories.map(category => {
+        return { params: {category: slugify(category)}, props: {name: category} }
+    });
+    return paths
+}
+ 
+const { name } = Astro.props;
+const { category } = Astro.params;
+
+const posts = await Astro.glob("../blog/posts/*.md");
+const formattedPosts = filterPosts(posts, { sortByDate: false, });
+const filteredPosts = formattedPosts.filter(post => slugify(post.frontmatter.category) === category);
+---
+
+<MainLayout title="My Blog" aria-label={`Posts about ${name}`}>
+    <seciton class="container">
+        <h1 class="h2">Posts about <span>{name}</span></h1>
+        <div class="post-container">
+            {filteredPosts.map(post => <PostCard frontmatter={post.frontmatter} url={post.url} showDescription={false}/>)}
+        </div>
+    </seciton>
+</MainLayout>

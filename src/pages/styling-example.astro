@@ -1,0 +1,19 @@
+---
+import MainLayout from "../layouts/MainLayout.astro"
+
+const foregroundColor = "green"
+const isGreen = true;
+---
+
+<MainLayout title="Index">
+    <p class:list={[ "big", { green: isGreen } ]}>Index</p>
+</MainLayout>
+
+<style define:vars={{ foregroundColor }}>
+	.big {
+		font-size: 2rem;
+	}
+	.green {
+		color: var(--foregroundColor);
+	}
+</style>

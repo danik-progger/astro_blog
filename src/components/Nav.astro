@@ -1,0 +1,19 @@
+---
+import { Icon } from "astro-icon/components";
+
+import { navLinks } from "../js/navData"
+import Link from "./Link.astro";
+---
+
+<nav aria-label="Primary">
+    <div class="navbar">
+        <a href="/" aria-label="Go Home" class="logomark">
+            <Icon name="home" width="60" height="60" />
+        </a>
+        <ul>
+            {navLinks.map(link =>
+                <Link text={link.name} href={link.href} style="secondary" isFilled={false}/>
+            )}
+        </ul>
+    </div>
+</nav>
